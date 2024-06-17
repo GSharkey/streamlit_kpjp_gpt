@@ -1,0 +1,9 @@
+langchain_community
+streamlit
+st_pages
+emoji
+os
+time
+glob
+gtts
+googletrans
