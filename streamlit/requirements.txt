@@ -2,7 +2,6 @@ langchain_community
 streamlit
 st_pages
 emoji
-time
 glob
 gtts
 googletrans
