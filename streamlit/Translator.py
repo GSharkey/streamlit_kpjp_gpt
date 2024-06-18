@@ -2,8 +2,6 @@ import streamlit as st
 import os
 import time
 import glob
-import os
-
 
 from gtts import gTTS
 from googletrans import Translator

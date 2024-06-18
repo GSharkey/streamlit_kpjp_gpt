@@ -38,33 +38,38 @@ def display_chat_history():
             st.markdown(
                 f"<div style='display: flex; justify-content: flex-start; margin-bottom: 10px;'>"
                 f"<div style='background-color: #e0f0ff; padding: 10px; border-radius: 10px; max-width: 70%; color: #000000;'>"
-                f"{emoji.emojize(':bust_in_silhouette:')} {message['message']}</div></div>",
+                f"{emoji.emojize(':bust_in_silhouette:')} {message['message']} </div></div>",
                 unsafe_allow_html=True
             )
         else:
             st.markdown(
                 f"<div style='display: flex; justify-content: flex-end; margin-bottom: 10px;'>"
                 f"<div style='background-color: #f1f0f0; padding: 10px; border-radius: 10px; max-width: 70%; color: #000000;'>"
-                f"{message['message']} {emoji.emojize(':robot:')}</div></div>",
+                f"{message['message']} {emoji.emojize(':robot:')} </div></div>",
                 unsafe_allow_html=True
             )
 
-
-
-# 사용자 입력 필드와 전송 버튼을 같은 행에 배치
-col1, col2 = st.columns([4, 1])
-with col1:
-    user_input = st.text_input("메시지를 입력하세요", key="user_input", label_visibility="collapsed", placeholder="메시지를 입력하세요")
-with col2:
-    send_button = st.button("전송" + emoji.emojize(":heavy_check_mark:"))
-
-if send_button:
+def handle_user_input():
+    user_input = st.session_state.get("user_input", "")
     if user_input:
         # LLM으로부터 응답받기
         bot_response = llm.invoke(user_input)
 
         # 대화 기록에 추가
         add_to_chat_history(user_input, bot_response)
+
+        # 사용자 입력란 초기화
+        st.session_state.user_input = ""
+
+# 사용자 입력 필드와 전송 버튼을 같은 행에 배치
+col1, col2 = st.columns([4, 1])
+with col1:
+    st.session_state.user_input = st.text_input("메시지를 입력하세요", label_visibility="collapsed", placeholder="메시지를 입력하세요")
+with col2:
+    send_button = st.button("전송" + emoji.emojize(":heavy_check_mark:"))
+
+if send_button:
+    handle_user_input()
 
 # 대화 기록 표시
 display_chat_history()
